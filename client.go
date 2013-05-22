@@ -11,15 +11,16 @@ import (
 func readSocket(conn net.Conn) {
     reader := bufio.NewReader(conn)
     for {
-        fmt.Print(reader.ReadString('\n'))
+        s, _ := reader.ReadString('\n')
+        fmt.Print(s)
     }
 }
 
 func writeSocket(conn net.Conn) {
     for {
         var message string
-        _ , _ = fmt.Scanf("%s", &message)
-        fmt.Fprintf(conn, message)
+        _ , _ = fmt.Scanln("%s", &message)
+        fmt.Fprintf(conn, message + "\n")
     }
 }
 
@@ -29,7 +30,7 @@ func main() {
     _, _ = fmt.Scanf("%s", &clientPairId)
     response, _ := http.Get("http://localhost:8080/meet/" + clientPairId)
     address, _ := ioutil.ReadAll(response.Body)
-    conn, _ := net.Dial("udp", string(address))
+    conn, _ := net.Dial("tcp", string(address))
     go readSocket(conn)
     writeSocket(conn)
 }

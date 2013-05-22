@@ -12,7 +12,8 @@ import (
 func readSocket(conn net.Conn) {
     reader := bufio.NewReader(conn)
     for {
-        fmt.Print(reader.ReadString('\n'))
+        s, _ := reader.ReadString('\n')
+        fmt.Print(s)
     }
 }
 
@@ -20,7 +21,7 @@ func writeSocket(conn net.Conn) {
     for {
         var message string
         _ , _ = fmt.Scanf("%s", &message)
-        fmt.Fprintf(conn, message)
+        fmt.Fprintf(conn, message + "\n")
     }
 }
 
